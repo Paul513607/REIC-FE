@@ -5,18 +5,22 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => 
-      import('./modules/homepage/homepage.module').then((m) => m.HomepageModule)
+      import('./modules/login/login.module').then((m) => m.LoginModule)
   }, 
   {
-    path: 'home',
+    path: 'login',
     loadChildren: () => 
-      import('./modules/homepage/homepage.module').then((m) => m.HomepageModule)
-    
+      import('./modules/login/login.module').then((m) => m.LoginModule)
   },
   {
-    path: 'calculator',
+    path: 'register',
     loadChildren: () =>
-      import('./modules/calculator/calculator.module').then((m) => m.CalculatorModule)
+      import('./modules/register/register.module').then((m) => m.RegisterModule)
+  },
+  {
+    path: 'homepage',
+    loadChildren: () =>
+      import('./modules/homepage/homepage.module').then((m) => m.HomepageModule)
   },
 ];
 
