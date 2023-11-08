@@ -2,12 +2,18 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { HomepageRoutingModule } from './homepage-routing.module';
-import { HomepageContentComponent } from './homepage-content/homepage-content.component';
+import { CalculatorSettingsComponent } from './calculator-settings/calculator-settings.component';
+import { LocationSettingsComponent } from './location-settings/location-settings.component';
+import { MapComponent } from './map/map.component';
+import { HomepageComponent } from './homepage/homepage.component';
 
 
 @NgModule({
   declarations: [
-    HomepageContentComponent
+    HomepageComponent,
+    CalculatorSettingsComponent,
+    LocationSettingsComponent,
+    MapComponent,
   ],
   imports: [
     CommonModule,
