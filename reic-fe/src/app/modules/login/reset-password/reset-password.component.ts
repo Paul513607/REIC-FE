@@ -1,24 +1,24 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.css']
 })
-export class RegisterComponent {
-  registerForm: FormGroup;
+export class ResetPasswordComponent {
+  resetPasswordForm: FormGroup;
   registrationError: string | null = null;
+  submitted: boolean = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
-    this.registerForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+    this.resetPasswordForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(8), this.passwordComplexityValidator()]],
       confirmPassword: ['', Validators.required]
     });
@@ -41,10 +41,9 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    if (this.registerForm.valid) {
-      const email = this.registerForm.value.email;
-      const password = this.registerForm.value.password;
-      const confirmPassword = this.registerForm.value.confirmPassword;
+    if (this.resetPasswordForm.valid) {
+      const password = this.resetPasswordForm.value.password;
+      const confirmPassword = this.resetPasswordForm.value.confirmPassword;
 
       if (password !== confirmPassword) {
         this.registrationError = 'Passwords do not match.';
@@ -56,17 +55,17 @@ export class RegisterComponent {
         return;
       }
 
-      this.authService.register(email, password).subscribe(
-        (isRegistered) => {
-          if (isRegistered) {
-            console.log('Registration successful!');
-            this.router.navigate(['/login']);
+      this.authService.resetPassword(password).subscribe(
+        (isReset) => {
+          if (isReset) {
+            console.log('Password reset successful!');
+            this.submitted = true;
           } else {
-            console.error('Registration failed.');
+            console.error('Password reset failed.');
           }
         },
         (error) => {
-          console.error('An error occurred during registration:', error);
+          console.error('An error occurred during password reset:', error);
         }
       );
     }

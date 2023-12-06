@@ -31,16 +31,13 @@ export class LoginComponent {
         (isAuthenticated) => {
           if (isAuthenticated) {
             console.log('Authentication successful!');
-            // Redirect to a protected route or perform other actions for authenticated users
             this.router.navigate(['/homepage']);
           } else {
             console.error('Invalid email or password.');
-            // Display error message or perform other actions for failed authentication
           }
         },
         (error) => {
           console.error('An error occurred during authentication:', error);
-          // Handle errors (e.g., display an error message)
         }
       );
     }
@@ -51,6 +48,6 @@ export class LoginComponent {
   }
 
   redirectToForgotPassword() {
-    // Implement logic for forgot password redirection
+    this.router.navigate(['/forgot-password']);
   }
 }

@@ -11,8 +11,10 @@ export class AuthService {
   }
 
   register(email: string, password: string): Observable<boolean> {
-    // Replace this with actual registration logic (e.g., API request)
-    // For simplicity, always return true for successful registration
+    return of(true);
+  }
+
+  resetPassword(password: string): Observable<boolean> {
     return of(true);
   }
 }
