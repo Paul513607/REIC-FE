@@ -6,7 +6,8 @@ import { CalculatorSettingsComponent } from './calculator-settings/calculator-se
 import { MapComponent } from './map/map.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { GroupsComponent } from './groups/groups.component';
-
+import { GoogleMapsModule } from '@angular/google-maps';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -15,9 +16,6 @@ import { GroupsComponent } from './groups/groups.component';
     MapComponent,
     GroupsComponent,
   ],
-  imports: [
-    CommonModule,
-    HomepageRoutingModule
-  ]
+  imports: [CommonModule, HomepageRoutingModule, GoogleMapsModule, MatButtonModule],
 })
-export class HomepageModule { }
+export class HomepageModule {}

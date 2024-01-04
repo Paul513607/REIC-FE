@@ -1,1 +1,21 @@
-<p>map works!</p>
+<google-map
+  #map
+  height="100vh"
+  width="100%"
+  [zoom]="zoom"
+  [options]="options"
+  [center]="center"
+  (mapClick)="mapClick($event)"
+></google-map>
+
+<div class="floating-button-group">
+  <button mat-raised-button color="primary" (click)="drawPolygon()">
+    Draw Polygon
+  </button>
+  <button mat-raised-button color="primary" (click)="clearPolygon()">
+    Clear Polygon
+  </button>
+  <button mat-raised-button color="primary" (click)="clearMarkers()">
+    Clear Markers
+  </button>
+</div>
