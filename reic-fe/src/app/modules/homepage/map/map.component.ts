@@ -36,6 +36,7 @@ export class MapComponent {
   }
 
   drawPolygon() {
+    this.clearPolygon();
     this.polygon = new google.maps.Polygon({
       paths: this.markers.map((marker) => marker.getPosition()!),
       strokeColor: '#FF0000',
