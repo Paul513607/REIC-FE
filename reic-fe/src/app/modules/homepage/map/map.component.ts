@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { PolygonEntity } from 'src/app/model/PolygonEntity';
+import { Coordinate } from 'src/app/model/Coordinate';
+import { Polygon } from 'src/app/model/Polygon';
 import { MapService } from 'src/app/services/map.service';
 
 @Component({
@@ -24,9 +25,7 @@ export class MapComponent {
   polygon: google.maps.Polygon | undefined;
   splitPolygons: google.maps.Polygon[] = [];
 
-  constructor(private mapService: MapService) { 
-    
-  }
+  constructor(private mapService: MapService) {}
 
   ngOnInit() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -39,7 +38,6 @@ export class MapComponent {
 
   mapClick(event: google.maps.MapMouseEvent) {
     const coordinates = event.latLng!.toJSON();
-    console.log(coordinates)
     this.addMarkerAt(coordinates);
   }
 
@@ -103,27 +101,29 @@ export class MapComponent {
   }
 
   public colorPolygon() {
-    let polygon_coordinates = this.markers.map((marker) => marker.getPosition()!);
-    let polygon_coordinates1 = polygon_coordinates.map((coordinate) => {
-      return {lat: coordinate.lat(), lng: coordinate.lng()}
-    })
-    this.mapService.getPolygonColors(polygon_coordinates1).subscribe(
-      (data) => {
-        this.clearPolygon();
-        for (let i = 0; i < data.length; i++) {
-          let polygonEntity: PolygonEntity = data[i];
-          let polygon = new google.maps.Polygon({
-            paths: polygonEntity.coordinates,
-            strokeColor: polygonEntity.color,
-            strokeOpacity: 0.8,
-            strokeWeight: 3,
-            fillColor: polygonEntity.color,
-            fillOpacity: 0.35,
-            map: this.mapElement.googleMap,
-          });
-          this.splitPolygons.push(polygon);
-        }
-      }
+    let coordinates = this.markers.map((marker) => marker.getPosition()!);
+    const polygon = new Polygon(
+      coordinates.map(
+        (coordinate) => new Coordinate(coordinate.lat(), coordinate.lng())
+      )
     );
+
+    this.mapService.getDividedPolygon(polygon).subscribe((dividedPolygon) => {
+      this.clearPolygon();
+      dividedPolygon.polygons.forEach((polygon) => {
+        const googlePolygon = new google.maps.Polygon({
+          paths: polygon.coordinates.map((coordinate) => {
+            return new google.maps.LatLng(coordinate.lat, coordinate.long);
+          }),
+          strokeColor: polygon.color,
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: polygon.color,
+          fillOpacity: 0.35,
+          map: this.mapElement.googleMap,
+        });
+        this.splitPolygons.push(googlePolygon);
+      });
+    });
   }
 }
