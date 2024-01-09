@@ -1,4 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
+import { PolygonEntity } from 'src/app/model/PolygonEntity';
+import { MapService } from 'src/app/services/map.service';
 
 @Component({
   selector: 'app-map',
@@ -20,6 +22,11 @@ export class MapComponent {
   };
   markers: google.maps.Marker[] = [];
   polygon: google.maps.Polygon | undefined;
+  splitPolygons: google.maps.Polygon[] = [];
+
+  constructor(private mapService: MapService) { 
+    
+  }
 
   ngOnInit() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -32,6 +39,7 @@ export class MapComponent {
 
   mapClick(event: google.maps.MapMouseEvent) {
     const coordinates = event.latLng!.toJSON();
+    console.log(coordinates)
     this.addMarkerAt(coordinates);
   }
 
@@ -51,6 +59,10 @@ export class MapComponent {
   clearPolygon() {
     this.polygon?.setMap(null);
     this.polygon = undefined;
+    for (let i = 0; i < this.splitPolygons.length; i++) {
+      this.splitPolygons[i].setMap(null);
+    }
+    this.splitPolygons = [];
   }
 
   clearMarkers() {
@@ -88,5 +100,30 @@ export class MapComponent {
     this.markers.forEach((marker, index) => {
       marker.setLabel(index.toString());
     });
+  }
+
+  public colorPolygon() {
+    let polygon_coordinates = this.markers.map((marker) => marker.getPosition()!);
+    let polygon_coordinates1 = polygon_coordinates.map((coordinate) => {
+      return {lat: coordinate.lat(), lng: coordinate.lng()}
+    })
+    this.mapService.getPolygonColors(polygon_coordinates1).subscribe(
+      (data) => {
+        this.clearPolygon();
+        for (let i = 0; i < data.length; i++) {
+          let polygonEntity: PolygonEntity = data[i];
+          let polygon = new google.maps.Polygon({
+            paths: polygonEntity.coordinates,
+            strokeColor: polygonEntity.color,
+            strokeOpacity: 0.8,
+            strokeWeight: 3,
+            fillColor: polygonEntity.color,
+            fillOpacity: 0.35,
+            map: this.mapElement.googleMap,
+          });
+          this.splitPolygons.push(polygon);
+        }
+      }
+    );
   }
 }
