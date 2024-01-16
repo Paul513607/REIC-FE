@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomepageComponent } from './homepage/homepage.component';
 import { MapComponent } from './map/map.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 const routes: Routes = [
   {

@@ -1,13 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Coordinate } from 'src/app/model/Coordinate';
 import { Polygon } from 'src/app/model/Polygon';
 import { PolygonVm } from 'src/app/model/PolygonVm';
 import { MapService } from 'src/app/services/map.service';
+import { SolarParamModalComponent } from '../solar-param-modal/solar-param-modal.component';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
+  styleUrls: ['./map.component.css'],
 })
 export class MapComponent {
   @ViewChild('map') mapElement!: any;
@@ -26,7 +28,9 @@ export class MapComponent {
   polygon: google.maps.Polygon | undefined;
   splitPolygons: google.maps.Polygon[] = [];
 
-  constructor(private mapService: MapService) {}
+  public currentCoordinate: Coordinate | undefined;
+
+  constructor(private mapService: MapService, private dialog: MatDialog) {}
 
   ngOnInit() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -68,6 +72,27 @@ export class MapComponent {
     this.markers.forEach((marker) => marker.setMap(null));
     this.markers = [];
     this.clearArea();
+  }
+
+  calculateSolarInvestmentRevenue() {
+    let coordinates = this.markers.map((marker) => marker.getPosition()!);
+
+    this.currentCoordinate = {
+      lat: coordinates[0].lat(),
+      long: coordinates[0].lng(),
+    };
+
+    const dialogRef = this.dialog.open(SolarParamModalComponent, {
+      width: '600px',
+      data: { coordinate: this.currentCoordinate },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Perform actions with the form data (result) here
+        console.log(result);
+      }
+    });
   }
 
   divideArea() {

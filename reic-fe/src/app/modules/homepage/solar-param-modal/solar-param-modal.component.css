@@ -1,0 +1,21 @@
+.modal-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}

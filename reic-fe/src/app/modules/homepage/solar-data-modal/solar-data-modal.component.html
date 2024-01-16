@@ -1,0 +1,22 @@
+<h1 mat-dialog-title class="modal-title">Solar Calculator</h1>
+<div mat-dialog-content class="result-container">
+    <h2>Energy Production per Month</h2>
+    <table mat-table [dataSource]="monthlyData">
+    <ng-container matColumnDef="month">
+        <th mat-header-cell *matHeaderCellDef> Month </th>
+        <td mat-cell *matCellDef="let data"> {{ data.month }} </td>
+    </ng-container>
+    <ng-container matColumnDef="energyProduction">
+        <th mat-header-cell *matHeaderCellDef> Energy Production </th>
+        <td mat-cell *matCellDef="let data"> {{ data.energyProduction }} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="['month', 'energyProduction']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['month', 'energyProduction']"></tr>
+    </table>
+
+    <p class="annual-revenue">Annual Revenue: {{ annualRevenue | currency: 'USD':true:'1.2-2' }}</p>
+</div>
+<div mat-dialog-actions class="modal-actions">
+    <button mat-button color="warn" (click)="onNoClick()">Close</button>
+    <button mat-button color="primary" (click)="onNextClick()">Next</button>
+</div>

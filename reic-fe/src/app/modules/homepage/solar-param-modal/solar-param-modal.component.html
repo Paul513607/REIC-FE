@@ -1,0 +1,35 @@
+<h1 mat-dialog-title class="modal-title">Solar Calculator</h1>
+<div *ngIf="!isResult" mat-dialog-content class="modal-form-container">
+  <form [formGroup]="modalForm" autocomplete="off" class="modal-form">
+    <mat-form-field class="form-group">
+      <label for="solarPanelArea">Solar Panel Area (km^2)</label>
+      <input matInput type="number" formControlName="solarPanelArea" />
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+      <label for="option">Option</label>
+      <mat-select formControlName="option" class="solar-options">
+        <mat-option *ngFor="let option of solarEnergyOptions" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+      <label for="costPerKw">Cost Per KWh (USD)</label>
+      <input matInput type="number" formControlName="costPerKWh" />
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+      <label for="operatingCost">Operating Cost (USD)</label>
+      <input matInput type="number" formControlName="operatingCost" />
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+      <label for="initialInvestment">Initial Investment (USD)</label>
+      <input matInput type="number" formControlName="initialInvestment" />
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions class="modal-actions">
+  <button mat-button color="warn" (click)="onNoClick()">Cancel</button>
+  <button mat-button color="primary" [mat-dialog-close]="modalForm.value" (click)="onNextClick($event)" [disabled]="modalForm.invalid">Next</button>
+</div>
