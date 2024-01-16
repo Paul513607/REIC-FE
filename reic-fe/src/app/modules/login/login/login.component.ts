@@ -31,7 +31,7 @@ export class LoginComponent {
         (isAuthenticated) => {
           if (isAuthenticated) {
             console.log('Authentication successful!');
-            this.router.navigate(['/homepage']);
+            this.router.navigate(['/homepage/map']);
           } else {
             console.error('Invalid email or password.');
           }
